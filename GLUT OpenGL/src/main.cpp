@@ -19,6 +19,7 @@
 #include "VertexArray.hpp"
 #include "Shader.hpp"
 #include "VertexBufferLayout.hpp"
+#include "Texture.hpp"
 
 
 
@@ -59,10 +60,10 @@ int main(void)
     std::cout << glGetString(GL_VERSION) << std::endl;
     
     float positions[] = {
-        -0.5f, -0.5f,
-        0.5f, -0.5f,
-        0.5f, 0.5f,
-        -0.5f, 0.5f,
+        -0.5f, -0.5f, 0.0f, 0.0f, // Bottom-left
+        0.5f, -0.5f, 1.0f, 0.0f, // Bottom-right
+        0.5f, 0.5f, 1.0f, 1.0f, // Top-right
+        -0.5f, 0.5f, 0.0f, 1.0f // Top-Left
     };
     
     unsigned int indices[] = {
@@ -72,10 +73,11 @@ int main(void)
     
     // Creating and binding the buffer
     VertexArray va;
-    VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+    VertexBuffer vb(positions, 4 * 4 * sizeof(float));
     VertexBufferLayout layout;
     
-    layout.push<float>(2);
+    layout.push<float>(2); // Vertex position buffer has 2 float (per position)
+    layout.push<float>(2); // Texture position buffer has 2 float (idem)
     va.addBuffer(vb, layout);
 
 
@@ -87,6 +89,10 @@ int main(void)
     shader.bind();
     shader.setUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
     shader.unbind();
+    
+    Texture texture("/Users/tuanminh/Documents/Scribbling/GLUT OpenGL/GLUT OpenGL/res/textures/grass.jpg");
+    texture.bind(); // Default slot is 0
+    shader.setUniform1i("u_Texture", 0); // Matches the slot of the texture
     
     va.unbind();
     vb.unbind();
@@ -111,7 +117,7 @@ int main(void)
         va.bind();
         ib.bind();
         
-        renderer.draw(va, ib, shader);
+        GLCall(renderer.draw(va, ib, shader));
 
         
         if(r > 1.0f) increment = -0.05f;

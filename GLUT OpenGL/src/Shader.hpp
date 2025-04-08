@@ -27,7 +27,7 @@ class Shader{
     
         std::string filepath;
         unsigned int renderer_id;
-        std::unordered_map<std::string, unsigned int> uniformLocationCache;
+        std::unordered_map<std::string, int> uniformLocationCache;
     
         int getUniformLocation(const std::string& name);
         unsigned int createShader(const std::string& vertexShader, const std::string fragmentShader);
@@ -42,6 +42,8 @@ class Shader{
     void unbind() const;
     
     // Set uniforms
+    void setUniform1i(const std::string& name, int value);
+    void setUniform1f(const std::string& name, float value);
     void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
 };
 
