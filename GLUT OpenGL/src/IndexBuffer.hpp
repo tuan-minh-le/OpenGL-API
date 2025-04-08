@@ -17,7 +17,7 @@ class IndexBuffer{
         ~IndexBuffer();
         void bind() const;
         void unbind() const;
-        unsigned int getCount();
+        unsigned int getCount() const;
 };
 
 #endif /* IndexBuffer_hpp */
