@@ -117,7 +117,7 @@ int main(void)
         va.bind();
         ib.bind();
         
-        GLCall(renderer.draw(va, ib, shader));
+        renderer.draw(va, ib, shader);
 
         
         if(r > 1.0f) increment = -0.05f;

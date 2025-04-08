@@ -2,18 +2,16 @@
 //  renderer.cpp
 //  GLUT OpenGL
 //
-//  Created by tuan minh on 5/4/25.
-//
 
-#include "Renderer.hpp"
+#include "renderer.hpp"
 #include <iostream>
 
-void GLClearError(){
+void GLClearError() {
     while(glGetError() != GL_NO_ERROR);
 }
 
-bool GLLogCall(const char* function, const char* file, int line){
-    while(GLenum error = glGetError()){
+bool GLLogCall(const char* function, const char* file, int line) {
+    while(GLenum error = glGetError()) {
         std::cout << "[OpenGL Error] (" << error << "): " << function <<
         " " << file << ":" << line << std::endl;
         return false;
@@ -21,13 +19,14 @@ bool GLLogCall(const char* function, const char* file, int line){
     return true;
 }
 
-void Renderer::clear() const{
+void Renderer::clear() const {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const{
+void Renderer::draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const {
     shader.bind();
     va.bind();
     ib.bind();
+    // Don't rebind here, just use what's already bound
     GLCall(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
 }
